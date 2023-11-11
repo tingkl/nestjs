@@ -5,3 +5,17 @@ get {{url}}user
 
 ###
 post {{url}}user
+
+
+### 
+get {{url}}logs
+
+### 
+get {{url}}logs/group
+
+
+### 
+get {{url}}logs/query
+
+###
+get {{url}}logs/notExistMethod

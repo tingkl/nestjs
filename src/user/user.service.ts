@@ -6,10 +6,18 @@ import { Repository } from 'typeorm';
 @Injectable()
 export class UserService {
     constructor(
-        @InjectRepository(User) private readonly userRepository: Repository<User>
+        @InjectRepository(User) private readonly userRepository: Repository<User>,
     ) { }
     findAll() {
-        return this.userRepository.find();
+        return this.userRepository.find({
+            relations: {
+                logs: true,
+                profile: true
+            }
+        });
+    }
+    find(username: string) {
+        return this.userRepository.findOne({ where: { username } })
     }
     async create(user: User) {
         const userTmp = await this.userRepository.create(user);

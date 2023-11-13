@@ -2,18 +2,38 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { User } from './user.entity';
 import { Injectable } from '@nestjs/common';
 import { Repository } from 'typeorm';
-
+import { FindAll } from './user.dto';
 @Injectable()
 export class UserService {
     constructor(
         @InjectRepository(User) private readonly userRepository: Repository<User>,
     ) { }
-    findAll() {
+    findAll(query: FindAll) {
+        const { limit, page, username, gender, roleId } = query;
+        const take = limit || 10;
         return this.userRepository.find({
+            select: {
+                id: true,
+                username: true,
+                profile: {
+                    gender: true
+                }
+            },
             relations: {
                 logs: true,
                 profile: true
-            }
+            },
+            where: {
+                username,
+                profile: {
+                    gender
+                },
+                roles: {
+                    id: roleId
+                }
+            },
+            take,
+            skip: (page - 1) * take,
         });
     }
     find(username: string) {

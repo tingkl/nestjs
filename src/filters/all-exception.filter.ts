@@ -1,6 +1,7 @@
 import { ArgumentsHost, Catch, ExceptionFilter, HttpException, HttpStatus, LoggerService } from "@nestjs/common";
 import { HttpAdapterHost } from "@nestjs/core";
 import * as requestIp from 'request-ip';
+import { QueryFailedError } from "typeorm";
 
 @Catch()
 export class AllExceptionFilter implements ExceptionFilter {
@@ -15,6 +16,10 @@ export class AllExceptionFilter implements ExceptionFilter {
 
         const httpStatus = exception instanceof HttpException ? exception.getStatus() : HttpStatus.INTERNAL_SERVER_ERROR;
 
+        let error = exception.response || 'Internal Server Error';
+        if (exception instanceof QueryFailedError) {
+            error = exception.message;
+        }
         const responseBody = {
             headers: request.headers,
             query: request.query,
@@ -23,7 +28,7 @@ export class AllExceptionFilter implements ExceptionFilter {
             timestamp: new Date().toISOString(),
             ip: requestIp.getClientIp(request),
             exception: exception.name,
-            error: exception.response || 'Internal Server Error'
+            error
         };
         // this.logger.error('[tomic]', responseBody)
         httpAdapter.reply(response, responseBody, httpStatus)

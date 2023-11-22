@@ -1,10 +1,15 @@
-import { Body, Controller, Get, Inject, Logger, LoggerService, Post, Param, Query, Head, Headers, UseFilters } from '@nestjs/common';
+import { Body, Controller, Get, Inject, Logger, LoggerService, Post, Param, Query, Head, Headers, UseFilters, ParseIntPipe, UseGuards, Req } from '@nestjs/common';
 import { UserService } from './user.service';
 import { ConfigService } from '@nestjs/config';
 import { User } from './user.entity';
 import { WINSTON_MODULE_NEST_PROVIDER } from 'nest-winston';
 import { FindAll } from './user.dto';
 import { TypeormFilter } from 'src/filters/typeorm.filter';
+import { CreateUserPipe } from './pipes/create-user/create-user.pipe';
+import { CreateUserDto } from './dto/create-user.dto';
+import { AuthGuard } from '@nestjs/passport';
+import { AdminGuard } from 'src/guards/admin/admin.guard';
+import { Roles } from 'src/roles/roles.decorator';
 
 @Controller('user')
 @UseFilters(TypeormFilter)
@@ -18,7 +23,10 @@ export class UserController {
     ) {
         this.logger.warn('UserController init')
     }
+
     @Get()
+    @Roles(["vip"])
+    @UseGuards(AuthGuard('jwt'), AdminGuard)
     getUsers(@Query() query: FindAll) {
         this.logger.log('请求getUsers成功')
         this.logger.warn('请求getUsers成功')
@@ -32,14 +40,22 @@ export class UserController {
         // console.log("host", host);
         // return this.userService.getUsers();
     }
+    @Get('/profile')
+    @UseGuards(AuthGuard('jwt'))
+    getuserProfile(@Query('id', ParseIntPipe) id: any, @Req() req) {
+        console.log("🚀 ~ file: user.controller.ts:28 ~ UserController ~ getuserProfile ~ req:", req.user)
+        console.log("🚀 ~ file: user.controller.ts:44 ~ UserController ~ getuserProfile ~ id:", id, typeof id)
+        return 'ok'
+    }
 
     @Post()
-    addUser() {
+    addUser(@Body(CreateUserPipe) dto: CreateUserDto) {
         const user = { username: 'tomic', password: '123456' } as User;
         return this.userService.create(user);
     }
 
     @Post("/test/:id/:name")
+    @UseGuards(AdminGuard)
     test(
         @Body() dto: any,
         @Headers("Content-Type") contentType: string,

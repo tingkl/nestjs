@@ -2,6 +2,7 @@
 
 ### 
 get {{url}}user?username=tomic&page=1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InRvbWljIiwic3ViIjoyLCJpYXQiOjE3MDA2NTcxNTQsImV4cCI6MTcwMDc0MzU1NH0.kNdqB7KJNBrEFxPi26xilVZHd3SK8rztxaKFioPfNrk
 
 ###
 post {{url}}user
@@ -27,4 +28,26 @@ Content-Type: application/json
 {
     "username": "xxx",
     "password": "ccc"
+}
+
+###
+post {{url}}auth/signin
+Content-Type: application/json
+
+{
+    "username": "tomic",
+    "password": "123456"
+}
+
+###
+get {{url}}user/profile?id=11
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InRvbWljIiwic3ViIjoyLCJpYXQiOjE3MDA0MDI1NDIsImV4cCI6MTcwMDQ4ODk0Mn0.aQfP_ofmLVbivxlxsfe1OiMG_DDZD5lcUvZkSHv_oYg
+
+###
+post {{url}}auth/signup
+Content-Type: application/json
+
+{
+    "username": "tomic",
+    "password": "123456"
 }

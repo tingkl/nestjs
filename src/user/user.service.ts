@@ -21,7 +21,8 @@ export class UserService {
             },
             relations: {
                 logs: true,
-                profile: true
+                profile: true,
+                roles: true
             },
             where: {
                 username,
@@ -37,9 +38,9 @@ export class UserService {
         });
     }
     find(username: string) {
-        return this.userRepository.findOne({ where: { username } })
+        return this.userRepository.findOne({ where: { username }, relations: { roles: true } })
     }
-    async create(user: User) {
+    async create(user: Partial<User>) {
         const userTmp = await this.userRepository.create(user);
         return this.userRepository.save(userTmp);
     }

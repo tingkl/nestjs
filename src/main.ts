@@ -3,6 +3,7 @@ import { AppModule } from './app.module';
 import { HttpExceptionFilter } from './filters/http-exception.filter';
 import { AllExceptionFilter } from './filters/all-exception.filter';
 import { WINSTON_MODULE_NEST_PROVIDER } from 'nest-winston';
+import { ValidationPipe } from '@nestjs/common';
 async function bootstrap() {
   // 关闭整个nestjs的日志
   const app = await NestFactory.create(AppModule, {
@@ -15,6 +16,10 @@ async function bootstrap() {
   // app.useGlobalFilters(new HttpExceptionFilter());
   app.useLogger(app.get(WINSTON_MODULE_NEST_PROVIDER))
   app.useGlobalFilters(new AllExceptionFilter(httpAdapter));
+  app.useGlobalPipes(new ValidationPipe({
+    // 去除类上不存在的字段
+    whitelist: true
+  }));
   await app.listen(3000);
 }
 bootstrap();

@@ -12,6 +12,7 @@ import { Roles } from './roles/roles.entity';
 import { Logs } from './logs/logs.entity';
 // import { LoggerModule } from 'nestjs-pino'
 // import { join } from 'path'
+import { AuthModule } from './auth/auth.module';
 console.log(process.env.NODE_ENV)
 enum ConfigEnum {
   DB_HOST = 'DB_HOST',
@@ -97,7 +98,8 @@ enum ConfigEnum {
       } as MongooseModuleOptions),
     }),
     LogsModule,
-    UserModule
+    UserModule,
+    AuthModule
   ],
   controllers: [],
   providers: [Logger],

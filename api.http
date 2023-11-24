@@ -2,7 +2,7 @@
 
 ### 
 get {{url}}user?username=tomic&page=1
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InRvbWljIiwic3ViIjoyLCJpYXQiOjE3MDA2NTcxNTQsImV4cCI6MTcwMDc0MzU1NH0.kNdqB7KJNBrEFxPi26xilVZHd3SK8rztxaKFioPfNrk
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InRvbWljIiwic3ViIjoyLCJpYXQiOjE3MDA4MzcyMzIsImV4cCI6MTcwMDkyMzYzMn0.d4QG7eJGXXp3QLoB5Mw-y1zv_Ws4g_e5J1XfEKEf130
 
 ###
 post {{url}}user

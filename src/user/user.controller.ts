@@ -7,12 +7,15 @@ import { FindAll } from './user.dto';
 import { TypeormFilter } from 'src/filters/typeorm.filter';
 import { CreateUserPipe } from './pipes/create-user/create-user.pipe';
 import { CreateUserDto } from './dto/create-user.dto';
-import { AuthGuard } from '@nestjs/passport';
-import { AdminGuard } from 'src/guards/admin/admin.guard';
+// import { AuthGuard } from '@nestjs/passport';
+import { AdminGuard } from 'src/guards/admin.guard';
 import { Roles } from 'src/roles/roles.decorator';
+import { JwtGuard } from 'src/guards/jwt.guard';
+import { JwtAdminGuard } from 'src/guards/jwt.admin.guard';
 
 @Controller('user')
-@UseFilters(TypeormFilter)
+// @UseFilters(TypeormFilter)
+@UseGuards(JwtAdminGuard)
 export class UserController {
     // private logger = new Logger(UserController.name)
     constructor(
@@ -26,7 +29,8 @@ export class UserController {
 
     @Get()
     @Roles(["vip"])
-    @UseGuards(AuthGuard('jwt'), AdminGuard)
+    // @UseGuards(AuthGuard('jwt'), AdminGuard)
+    // @UseGuards(AdminGuard)
     getUsers(@Query() query: FindAll) {
         this.logger.log('请求getUsers成功')
         this.logger.warn('请求getUsers成功')
@@ -41,7 +45,7 @@ export class UserController {
         // return this.userService.getUsers();
     }
     @Get('/profile')
-    @UseGuards(AuthGuard('jwt'))
+    // @UseGuards(AuthGuard('jwt'))
     getuserProfile(@Query('id', ParseIntPipe) id: any, @Req() req) {
         console.log("🚀 ~ file: user.controller.ts:28 ~ UserController ~ getuserProfile ~ req:", req.user)
         console.log("🚀 ~ file: user.controller.ts:44 ~ UserController ~ getuserProfile ~ id:", id, typeof id)

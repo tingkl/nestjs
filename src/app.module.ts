@@ -13,6 +13,8 @@ import { Logs } from './logs/logs.entity';
 // import { LoggerModule } from 'nestjs-pino'
 // import { join } from 'path'
 import { AuthModule } from './auth/auth.module';
+import { APP_GUARD } from '@nestjs/core';
+import { JwtAdminGuard } from './guards/jwt.admin.guard';
 console.log(process.env.NODE_ENV)
 enum ConfigEnum {
   DB_HOST = 'DB_HOST',
@@ -102,7 +104,13 @@ enum ConfigEnum {
     AuthModule
   ],
   controllers: [],
-  providers: [Logger],
+  providers: [
+    Logger,
+    // {
+    //   provide: APP_GUARD,
+    //   useClass: JwtAdminGuard
+    // }
+  ],
   exports: [Logger]
 })
 export class AppModule { }

@@ -15,11 +15,13 @@ async function bootstrap() {
   const httpAdapter = app.get(HttpAdapterHost);
   // app.useGlobalFilters(new HttpExceptionFilter());
   app.useLogger(app.get(WINSTON_MODULE_NEST_PROVIDER))
-  app.useGlobalFilters(new AllExceptionFilter(httpAdapter));
+  // app.useGlobalFilters(new AllExceptionFilter(httpAdapter));
   app.useGlobalPipes(new ValidationPipe({
     // 去除类上不存在的字段
     whitelist: true
   }));
+  // app.useGlobalGuards();
+  // 弊端 -> 无法使用DI -> 无法访问userService等DI上的bean
   await app.listen(3000);
 }
 bootstrap();

@@ -3,6 +3,7 @@ import { User } from './user.entity';
 import { Injectable } from '@nestjs/common';
 import { Repository } from 'typeorm';
 import { FindAll } from './user.dto';
+import * as argon2 from 'argon2'
 @Injectable()
 export class UserService {
     constructor(
@@ -41,6 +42,8 @@ export class UserService {
         return this.userRepository.findOne({ where: { username }, relations: { roles: true } })
     }
     async create(user: Partial<User>) {
+        user.password = await argon2.hash(user.password)
+        console.log(user.password)
         const userTmp = await this.userRepository.create(user);
         return this.userRepository.save(userTmp);
     }

@@ -2,6 +2,7 @@ import { Logs } from "src/logs/logs.entity";
 import { Roles } from "src/roles/roles.entity";
 import { Column, Entity, JoinTable, ManyToMany, OneToMany, OneToOne, PrimaryGeneratedColumn } from "typeorm";
 import { Profile } from './profile.entity';
+import { Exclude } from "class-transformer";
 
 @Entity()
 export class User {
@@ -10,6 +11,7 @@ export class User {
     @Column()
     username: string;
     @Column()
+    @Exclude()
     password: string;
     @OneToOne(() => Profile, (profile) => profile.user)
     profile: Profile;

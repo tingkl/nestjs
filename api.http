@@ -22,6 +22,16 @@ get {{url}}logs/notExistMethod
 
 
 ###
+post {{url}}logs
+Content-Type: application/json
+
+{
+    "msg": "this is msg",
+    "id": "this is id",
+    "password": "ccc"
+}
+
+###
 post {{url}}user/test/11/awesome?a=vvv&b=2
 Content-Type: application/json
 
@@ -48,6 +58,6 @@ post {{url}}auth/signup
 Content-Type: application/json
 
 {
-    "username": "tomic",
+    "username": "tomic3",
     "password": "123456"
 }

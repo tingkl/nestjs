@@ -15,7 +15,6 @@ import { JwtAdminGuard } from 'src/guards/jwt.admin.guard';
 
 @Controller('user')
 // @UseFilters(TypeormFilter)
-@UseGuards(JwtAdminGuard)
 export class UserController {
     // private logger = new Logger(UserController.name)
     constructor(
@@ -29,6 +28,7 @@ export class UserController {
 
     @Get()
     @Roles(["vip"])
+    @UseGuards(JwtAdminGuard)
     // @UseGuards(AuthGuard('jwt'), AdminGuard)
     // @UseGuards(AdminGuard)
     getUsers(@Query() query: FindAll) {
@@ -54,8 +54,7 @@ export class UserController {
 
     @Post()
     addUser(@Body(CreateUserPipe) dto: CreateUserDto) {
-        const user = { username: 'tomic', password: '123456' } as User;
-        return this.userService.create(user);
+        return this.userService.create(dto as Partial<User>);
     }
 
     @Post("/test/:id/:name")

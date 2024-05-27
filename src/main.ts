@@ -7,6 +7,7 @@ import { ValidationPipe } from '@nestjs/common';
 async function bootstrap() {
   // 关闭整个nestjs的日志
   const app = await NestFactory.create(AppModule, {
+    cors: true
     // 关闭所有日志
     // logger: false 
     // logger: ['error', 'warn']
